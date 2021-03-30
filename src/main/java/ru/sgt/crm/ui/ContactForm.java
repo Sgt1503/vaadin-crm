@@ -21,39 +21,59 @@ import ru.sgt.crm.backend.entity.Contact;
 import java.util.List;
 
 public class ContactForm extends FormLayout {
+    Binder<Contact> binder = new BeanValidationBinder<>(Contact.class);
 
     private Contact contact;
 
-    TextField firstName = new TextField("First name");
-    TextField lastName = new TextField("Last name");
+    TextField firstName = new TextField("Имя");
+    TextField lastName = new TextField("Фамилия");
     EmailField email = new EmailField("Email");
-    ComboBox<Contact.Status> status = new ComboBox<>("Status");
-    ComboBox<Company> company = new ComboBox<>("Company");
-    Binder<Contact> binder = new BeanValidationBinder<>(Contact.class);
+    ComboBox<Contact.Status> status = new ComboBox<>("Статус");
+    ComboBox<Company> company = new ComboBox<>("Позиция");
 
-    Button save = new Button("Save");
-    Button delete = new Button("Delete");
-    Button close = new Button("Cancel");
-
-    public ContactForm() {
-        addClassName("contact-form");
-        binder.bindInstanceFields(this);
-        add(firstName,
-                lastName,
-                email,
-                company,
-                status,
-                createButtonsLayout());
-    }
-
+    Button save = new Button("Сохранить");
+    Button delete = new Button("Удалить");
+    Button close = new Button("Отмена");
 
     public ContactForm(List<Company> companies) {
         addClassName("contact-form");
         binder.bindInstanceFields(this);
-
         company.setItems(companies);
         company.setItemLabelGenerator(Company::getName);
         status.setItems(Contact.Status.values());
+
+        add(firstName,
+            lastName,
+            email,
+            company,
+            status,
+            createButtonsLayout());
+    }
+
+    private Component createButtonsLayout() {
+        save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        delete.addThemeVariants(ButtonVariant.LUMO_ERROR);
+        close.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+
+        save.addClickShortcut(Key.ENTER);
+        close.addClickShortcut(Key.ESCAPE);
+
+        save.addClickListener(event -> validateAndSave());
+        delete.addClickListener(event -> fireEvent(new DeleteEvent(this, contact)));
+        close.addClickListener(event -> fireEvent(new CloseEvent(this)));
+
+
+        binder.addStatusChangeListener(e -> save.setEnabled(binder.isValid()));
+        return new HorizontalLayout(save, delete, close);
+    }
+
+    private void validateAndSave() {
+        try {
+            binder.writeBean(contact);
+            fireEvent(new SaveEvent(this, contact));
+        } catch (ValidationException e) {
+            e.printStackTrace();
+        }
     }
 
     public void setContact(Contact contact) {
@@ -95,35 +115,7 @@ public class ContactForm extends FormLayout {
     }
 
     public <T extends ComponentEvent<?>> Registration addListener(Class<T> eventType,
-                                                                  ComponentEventListener<T> listener) {
+        ComponentEventListener<T> listener) {
         return getEventBus().addListener(eventType, listener);
     }
-
-    private void validateAndSave() {
-        try {
-            binder.writeBean(contact);
-            fireEvent(new SaveEvent(this, contact));
-        } catch (ValidationException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private Component createButtonsLayout() {
-        save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        delete.addThemeVariants(ButtonVariant.LUMO_ERROR);
-        close.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
-
-        save.addClickShortcut(Key.ENTER);
-        close.addClickShortcut(Key.ESCAPE);
-
-//        save.addClickListener(event -> validateAndSave());
-//        delete.addClickListener(event -> fireEvent(new DeleteEvent(this, contact)));
-//        close.addClickListener(event -> fireEvent(new CloseEvent(this)));
-//
-//
-//        binder.addStatusChangeListener(e -> save.setEnabled(binder.isValid()));
-//
-        return new HorizontalLayout(save, delete, close);
-    }
 }
-
