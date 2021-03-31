@@ -17,9 +17,9 @@ import ru.sgt.crm.backend.service.ContactService;
 import ru.sgt.crm.ui.ContactForm;
 import ru.sgt.crm.ui.MainLayout;
 
-@Route(value="", layout = MainLayout.class)
+@Route(value="crm", layout = MainLayout.class)
 @CssImport("./styles/shared-styles.css")
-@PageTitle("Contacts | Vaadin CRM")
+@PageTitle("Contacts | KimPub CRM")
 public class ListView extends VerticalLayout {
 
     private ContactService contactService;

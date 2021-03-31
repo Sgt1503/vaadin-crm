@@ -62,7 +62,7 @@
       "ts-loader": "8.0.12",
       "typescript": "4.0.3"
     },
-    "hash": "c25c4491a794d51b726775042013c6a43d66a01695f911cb926536b7f454a675"
+    "hash": "56914081d54014b03eb1ee08c225932681a8473d9f7d12b1d9495d8e30f01d0f"
   },
   "dependencies": {
     "@polymer/iron-icon": "3.0.1",
@@ -108,7 +108,8 @@
     "@vaadin/vaadin-time-picker": "2.4.0",
     "@vaadin/vaadin-upload": "4.4.1",
     "@webcomponents/webcomponentsjs": "^2.2.10",
-    "lit-element": "2.4.0"
+    "lit-element": "2.4.0",
+    "@vaadin/vaadin-shrinkwrap": "14.5.1"
   },
   "devDependencies": {
     "chokidar": "^3.5.0",

@@ -11,21 +11,26 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.HighlightConditions;
 import com.vaadin.flow.router.RouterLink;
 import ru.sgt.crm.ui.view.ListView;
+import ru.sgt.crm.ui.view.MainView;
 
 @CssImport("./styles/shared-styles.css")
 public class MainLayout extends AppLayout {
     public MainLayout() {
         createHeader();
-        createDrawer();
     }
 
     private void createHeader() {
         H1 logo = new H1("KimPub");
         logo.addClassName("logo");
 
-        Anchor logout = new Anchor("logout", "Log out");
 
-        HorizontalLayout header = new HorizontalLayout(new DrawerToggle(), logo, logout);
+        Anchor crm = new Anchor("crm", "CRM");
+        Anchor logout = new Anchor("logout", "Выйти");
+        Anchor main = new Anchor("", "Главная");
+
+
+
+        HorizontalLayout header = new HorizontalLayout(new DrawerToggle(), logo, main, crm, logout);
 
         header.expand(logo);
         header.setDefaultVerticalComponentAlignment(
@@ -36,12 +41,5 @@ public class MainLayout extends AppLayout {
 
         addToNavbar(header);
 
-    }
-
-    private void createDrawer() {
-        RouterLink listLink = new RouterLink("List", ListView.class);
-        listLink.setHighlightCondition(HighlightConditions.sameLocation());
-
-        addToDrawer(new VerticalLayout(listLink));
     }
 }

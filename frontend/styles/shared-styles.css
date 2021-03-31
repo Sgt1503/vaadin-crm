@@ -18,6 +18,26 @@
     display: none;
   }
 }
+/* Main layout */
+
+.main-view .content {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-self: center;
+}
+
+
+.main-view .img {
+  object-fit: cover;
+  width: 320px;
+  height: 180px;
+  cursor: pointer;
+}
+
+
+
+
 
 /* Main layout */
 
